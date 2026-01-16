@@ -8,6 +8,9 @@ const { body, validationResult } = require('express-validator');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Trust proxy (required when behind Cloudflare/nginx)
+app.set('trust proxy', 1);
+
 // Initialize Firestore with fallback to in-memory storage for development
 let firestore;
 let inMemoryDb = {
