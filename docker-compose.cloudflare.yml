@@ -20,7 +20,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3001
-      - FRONTEND_URL=https://selectcentre.pl
+      - FRONTEND_URL=https://new.selectcentre.pl
       - GOOGLE_CLOUD_PROJECT=selectcentre-database
       - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account.json
       - FIRESTORE_DATABASE_ID=selectcentre

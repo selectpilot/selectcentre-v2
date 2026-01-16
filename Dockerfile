@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build the application
-ARG VITE_API_URL=https://api.selectcentre.pl/api
+ARG VITE_API_URL=https://api.new.selectcentre.pl/api
 ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
