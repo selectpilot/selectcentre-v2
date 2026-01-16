@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://selectcentre.pl/</loc>
+    <lastmod>2026-01-16T10:00:00+01:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://selectcentre.pl/strefa-konsumenta</loc>
+    <lastmod>2026-01-16T10:00:00+01:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://selectcentre.pl/privacy-policy</loc>
+    <lastmod>2026-01-16T10:00:00+01:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://selectcentre.pl/klauzula-informacyjna</loc>
+    <lastmod>2026-01-16T10:00:00+01:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://selectcentre.pl/regulamin</loc>
+    <lastmod>2026-01-16T10:00:00+01:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>

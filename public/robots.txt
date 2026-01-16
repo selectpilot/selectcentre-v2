@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://selectcentre.pl/sitemap.xml
+
+# Disallow crawling of assets and development files
+Disallow: /assets/
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: *.json
+Disallow: *.js.map
+Disallow: *.css.map
+
+# Allow important pages
+Allow: /
+Allow: /strefa-konsumenta
+Allow: /privacy-policy
+Allow: /klauzula-informacyjna
+Allow: /regulamin
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

@@ -1,0 +1,9 @@
+<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- Stylized f with exact curve from attachment -->
+  <path d="M130 40 C130 25, 145 15, 170 15 C195 15, 210 25, 210 40 C210 65, 185 75, 170 75 L170 75 L170 95 L170 115" stroke="#000" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Small dot -->
+  <circle cx="190" cy="50" r="6" fill="#000"/>
+  
+  <!-- FLAWLESS text exactly as shown -->
+  <text x="150" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="900" letter-spacing="3px" fill="#000">FLAWLESS</text>
+</svg>
