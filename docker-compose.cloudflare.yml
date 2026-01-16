@@ -25,7 +25,7 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account.json
       - FIRESTORE_DATABASE_ID=selectcentre
     volumes:
-      - ./credentials:/app/credentials:ro
+      - /opt/selectcentre/credentials:/app/credentials:ro
     restart: unless-stopped
     networks:
       - selectcentre-network
