@@ -83,6 +83,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ~/selectcentre-v2
+            git pull origin main
             docker compose -f docker-compose.cloudflare.yml pull
             docker compose -f docker-compose.cloudflare.yml up -d --remove-orphans
             docker image prune -f
