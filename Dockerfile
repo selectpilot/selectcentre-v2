@@ -13,6 +13,8 @@ RUN npm ci
 COPY . .
 
 # Build the application
+ARG VITE_API_URL=https://api.selectcentre.pl/api
+ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
 # Production stage - using nginx to serve static files

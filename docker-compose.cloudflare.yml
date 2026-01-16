@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: ghcr.io/selectpilot/selectcentre-v2/frontend:latest
+    expose:
+      - "80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - selectcentre-network
+
+  backend:
+    image: ghcr.io/selectpilot/selectcentre-v2/backend:latest
+    expose:
+      - "3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - FRONTEND_URL=https://selectcentre.pl
+      - GOOGLE_CLOUD_PROJECT=selectcentre-database
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account.json
+      - FIRESTORE_DATABASE_ID=selectcentre
+    volumes:
+      - ./credentials:/app/credentials:ro
+    restart: unless-stopped
+    networks:
+      - selectcentre-network
+
+  # Cloudflare Tunnel - secure connection without opening ports
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    restart: unless-stopped
+    networks:
+      - selectcentre-network
+    depends_on:
+      - frontend
+      - backend
+
+  # Watchtower - auto-update containers
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.docker/config.json:/config.json:ro
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300
+    restart: unless-stopped
+
+networks:
+  selectcentre-network:
+    driver: bridge
