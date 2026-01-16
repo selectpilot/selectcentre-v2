@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Ban, CheckCircle, X } from 'lucide-react';
+import { Ban, CheckCircle, X, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { trackEvent, trackFacebookEvent } from './Analytics';
+import { submitOptOutForm } from '../services/api';
 
 const OptOutModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ const OptOutModal = ({ isOpen, onClose }) => {
     nip: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,23 +21,36 @@ const OptOutModal = ({ isOpen, onClose }) => {
       ...prev,
       [name]: value
     }));
+    setError(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Basic validation: Name required, and at least one of Phone or NIP
-    if (formData.fullName && (formData.phone || formData.nip)) {
+    if (!formData.fullName || !formData.email) {
+      setError('Proszę podać imię i nazwisko oraz email.');
+      return;
+    }
+    
+    if (!formData.phone && !formData.nip) {
+      setError('Proszę podać numer telefonu lub NIP.');
+      return;
+    }
+    
+    setIsLoading(true);
+    setError(null);
+    
+    try {
       // Track analytics events
       trackEvent('opt_out_submit', 'RODO', 'Opt-out Form Submit', 1);
       trackFacebookEvent('Contact', { content_name: 'Opt-out Request' });
       
+      await submitOptOutForm(formData);
       setIsSubmitted(true);
-      // Here you would normally send the data to the backend
-    } else {
-      // Optional: Show error if validation fails (handled by browser 'required' mostly, but custom check for phone/nip logic needed)
-      if (!formData.phone && !formData.nip) {
-        alert("Proszę podać numer telefonu lub NIP.");
-      }
+    } catch (err) {
+      setError(err.message || 'Wystąpił błąd. Spróbuj ponownie.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -163,6 +179,13 @@ const OptOutModal = ({ isOpen, onClose }) => {
                     </p>
                   </div>
 
+                  {error && (
+                    <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-red-700">
+                      <AlertCircle size={18} />
+                      <span className="text-sm">{error}</span>
+                    </div>
+                  )}
+
                   <div className="flex gap-3 pt-4">
                     <button
                       type="button"
@@ -173,9 +196,17 @@ const OptOutModal = ({ isOpen, onClose }) => {
                     </button>
                     <button 
                       type="submit"
-                      className="flex-1 py-3 px-6 bg-navy text-white font-semibold rounded-xl hover:bg-navy-light transition-colors shadow-lg shadow-navy/20"
+                      disabled={isLoading}
+                      className="flex-1 py-3 px-6 bg-navy text-white font-semibold rounded-xl hover:bg-navy-light transition-colors shadow-lg shadow-navy/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
-                      Zgłoś sprzeciw
+                      {isLoading ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                          Wysyłanie...
+                        </>
+                      ) : (
+                        'Zgłoś sprzeciw'
+                      )}
                     </button>
                   </div>
                 </form>

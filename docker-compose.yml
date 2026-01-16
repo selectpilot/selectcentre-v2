@@ -1,0 +1,66 @@
+services:
+  # Development service - Frontend
+  dev:
+    build:
+      context: .
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:3001/api
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+  # Backend API service
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - FRONTEND_URL=http://localhost:5173
+      - GOOGLE_CLOUD_PROJECT=selectcentre-database
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/selectcentre-database-e25b6fc98219.json
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./credentials:/app/credentials:ro
+    restart: unless-stopped
+
+  # Production service - Frontend (nginx serving built files)
+  prod:
+    build:
+      context: .
+      target: production
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend-prod
+    restart: unless-stopped
+
+  # Production Backend
+  backend-prod:
+    build:
+      context: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - FRONTEND_URL=https://selectcentre.pl
+      - GOOGLE_CLOUD_PROJECT=selectcentre-forms
+      # For production, mount service account key or use GKE Workload Identity
+      # - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account.json
+    # volumes:
+    #   - ./credentials:/app/credentials:ro
+    restart: unless-stopped

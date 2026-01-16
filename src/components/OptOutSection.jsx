@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Ban, CheckCircle } from 'lucide-react';
+import { Ban, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { submitOptOutForm } from '../services/api';
 
 const OptOutSection = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ const OptOutSection = () => {
     nip: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,19 +20,33 @@ const OptOutSection = () => {
       ...prev,
       [name]: value
     }));
+    setError(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Basic validation: Name required, and at least one of Phone or NIP
-    if (formData.fullName && (formData.phone || formData.nip)) {
+    
+    // Validation: Name required, and at least one of Phone or NIP
+    if (!formData.fullName || !formData.email) {
+      setError('Proszę podać imię i nazwisko oraz email.');
+      return;
+    }
+    
+    if (!formData.phone && !formData.nip) {
+      setError('Proszę podać numer telefonu lub NIP.');
+      return;
+    }
+    
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      await submitOptOutForm(formData);
       setIsSubmitted(true);
-      // Here you would normally send the data to the backend
-    } else {
-      // Optional: Show error if validation fails (handled by browser 'required' mostly, but custom check for phone/nip logic needed)
-      if (!formData.phone && !formData.nip) {
-        alert("Proszę podać numer telefonu lub NIP.");
-      }
+    } catch (err) {
+      setError(err.message || 'Wystąpił błąd. Spróbuj ponownie.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,25 +73,27 @@ const OptOutSection = () => {
             <form onSubmit={handleSubmit} className="max-w-xl mx-auto text-left">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
-                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1 ml-1">Imię i Nazwisko</label>
+                  <label htmlFor="optout-fullName" className="block text-sm font-medium text-gray-700 mb-1 ml-1">Imię i Nazwisko *</label>
                   <input
                     type="text"
                     name="fullName"
-                    id="fullName"
+                    id="optout-fullName"
                     placeholder="Jan Kowalski"
                     className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
                     value={formData.fullName}
                     onChange={handleChange}
                     required
+                    minLength={2}
+                    maxLength={100}
                   />
                 </div>
                 
                 <div className="md:col-span-2">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 ml-1">Adres e-mail</label>
+                  <label htmlFor="optout-email" className="block text-sm font-medium text-gray-700 mb-1 ml-1">Adres e-mail *</label>
                   <input
                     type="email"
                     name="email"
-                    id="email"
+                    id="optout-email"
                     placeholder="jan@przyklad.pl"
                     className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
                     value={formData.email}
@@ -84,11 +103,11 @@ const OptOutSection = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1 ml-1">Numer telefonu</label>
+                  <label htmlFor="optout-phone" className="block text-sm font-medium text-gray-700 mb-1 ml-1">Numer telefonu</label>
                   <input
                     type="tel"
                     name="phone"
-                    id="phone"
+                    id="optout-phone"
                     placeholder="123 456 789"
                     className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
                     value={formData.phone}
@@ -97,25 +116,43 @@ const OptOutSection = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="nip" className="block text-sm font-medium text-gray-700 mb-1 ml-1">NIP (opcjonalnie)</label>
+                  <label htmlFor="optout-nip" className="block text-sm font-medium text-gray-700 mb-1 ml-1">NIP (opcjonalnie)</label>
                   <input
                     type="text"
                     name="nip"
-                    id="nip"
+                    id="optout-nip"
                     placeholder="1234567890"
+                    pattern="[0-9]{10}"
+                    title="NIP musi składać się z 10 cyfr"
                     className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
                     value={formData.nip}
                     onChange={handleChange}
                   />
+                  <p className="text-xs text-gray-400 mt-1 ml-1">10 cyfr, bez myślników</p>
                 </div>
               </div>
+
+              {error && (
+                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-red-700">
+                  <AlertCircle size={18} />
+                  <span className="text-sm">{error}</span>
+                </div>
+              )}
 
               <div className="mt-6">
                 <button 
                   type="submit"
-                  className="w-full bg-navy text-white font-semibold py-4 rounded-xl hover:bg-navy-light transition-colors shadow-lg shadow-navy/20"
+                  disabled={isLoading}
+                  className="w-full bg-navy text-white font-semibold py-4 rounded-xl hover:bg-navy-light transition-colors shadow-lg shadow-navy/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  Zgłoś sprzeciw
+                  {isLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Wysyłanie...
+                    </>
+                  ) : (
+                    'Zgłoś sprzeciw'
+                  )}
                 </button>
                 <p className="mt-3 text-xs text-center text-gray-400">
                   Wymagane jest podanie numeru telefonu lub NIP w celu identyfikacji w bazie.

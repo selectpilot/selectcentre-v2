@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Credentials (NEVER commit these!)
+credentials/*.json
+.env
+.env.local

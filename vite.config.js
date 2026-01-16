@@ -39,9 +39,19 @@ export default defineConfig({
   
   // Performance optimizations
   server: {
+    host: '0.0.0.0', // Bind to all interfaces for Docker
+    port: 5173,
     hmr: {
-      overlay: true
-    }
+      overlay: true,
+      protocol: 'ws',
+      host: 'localhost',
+      port: 5173,
+      clientPort: 5173
+    },
+    // Disable CORS restrictions for local dev
+    cors: true,
+    // Allow all origins in development
+    origin: '*'
   },
   
   // Asset handling

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { trackEvent, trackFacebookEvent } from './Analytics';
+import { submitContactForm } from '../services/api';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const ContactSection = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,39 +21,31 @@ const ContactSection = () => {
       ...prev,
       [name]: value
     }));
+    setError(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.name && formData.email && formData.message) {
       setIsLoading(true);
+      setError(null);
       
-      // Track analytics events
-      trackEvent('contact_form_submit', 'Contact', 'Form Submission', 1);
-      trackFacebookEvent('Contact', { content_name: 'Contact Form' });
-      
-      // Simulate processing time
-      setTimeout(() => {
-        const subject = `Zapytanie od ${formData.name} - ${formData.company || 'Firma niespecjalnie'}`;
-        const body = `
-Imię i nazwisko: ${formData.name}
-Firma: ${formData.company || 'Nie podano'}
-Email: ${formData.email}
-
-Wiadomość:
-${formData.message}
-      `;
+      try {
+        trackEvent('contact_form_submit', 'Contact', 'Form Submission', 1);
+        trackFacebookEvent('Contact', { content_name: 'Contact Form' });
         
-        const mailtoLink = `mailto:kontakt@selectcentre.pl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        window.open(mailtoLink, '_blank');
+        await submitContactForm(formData);
         
-        setIsLoading(false);
         setIsSubmitted(true);
         setTimeout(() => {
           setIsSubmitted(false);
           setFormData({ name: '', email: '', company: '', message: '' });
-        }, 3000);
-      }, 1000);
+        }, 5000);
+      } catch (err) {
+        setError(err.message || 'Wystąpił błąd. Spróbuj ponownie.');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -162,14 +156,16 @@ ${formData.message}
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">
                       Imię i nazwisko *
                     </label>
                     <input
                       type="text"
                       name="name"
-                      id="name"
+                      id="contact-name"
                       required
+                      minLength={2}
+                      maxLength={100}
                       value={formData.name}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
@@ -178,13 +174,13 @@ ${formData.message}
                   </div>
                   
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="contact-email" className="block text-sm font-medium text-gray-700 mb-1">
                       Email *
                     </label>
                     <input
                       type="email"
                       name="email"
-                      id="email"
+                      id="contact-email"
                       required
                       value={formData.email}
                       onChange={handleChange}
@@ -195,13 +191,14 @@ ${formData.message}
                 </div>
 
                 <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="contact-company" className="block text-sm font-medium text-gray-700 mb-1">
                     Firma (opcjonalnie)
                   </label>
                   <input
                     type="text"
                     name="company"
-                    id="company"
+                    id="contact-company"
+                    maxLength={200}
                     value={formData.company}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
@@ -210,20 +207,29 @@ ${formData.message}
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="contact-message" className="block text-sm font-medium text-gray-700 mb-1">
                     Wiadomość *
                   </label>
                   <textarea
                     name="message"
-                    id="message"
+                    id="contact-message"
                     required
                     rows={6}
+                    minLength={10}
+                    maxLength={5000}
                     value={formData.message}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all resize-none"
                     placeholder="Opisz czego potrzebujesz - rodzaj danych, branża, region..."
                   />
                 </div>
+
+                {error && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-red-700">
+                    <AlertCircle size={18} />
+                    <span className="text-sm">{error}</span>
+                  </div>
+                )}
 
                 <button
                   type="submit"
@@ -233,7 +239,7 @@ ${formData.message}
                   {isLoading ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Przygotowywanie...
+                      Wysyłanie...
                     </>
                   ) : (
                     <>
@@ -244,7 +250,7 @@ ${formData.message}
                 </button>
                 
                 <p className="text-xs text-gray-500 text-center">
-                  Klikając "Wyślij" otworzysz program pocztowy z wypełnioną wiadomością
+                  Twoja wiadomość zostanie bezpiecznie zapisana i otrzymamy ją natychmiast.
                 </p>
               </form>
             ) : (
@@ -252,8 +258,8 @@ ${formData.message}
                 <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Send className="w-8 h-8 text-green-500" />
                 </div>
-                <h4 className="text-lg font-semibold text-green-800 mb-2">Program pocztowy został uruchomiony!</h4>
-                <p className="text-gray-600">Wyślij wiadomość z programu pocztowego, aby dotarła do nas.</p>
+                <h4 className="text-lg font-semibold text-green-800 mb-2">Wiadomość została wysłana!</h4>
+                <p className="text-gray-600">Dziękujemy za kontakt. Odpowiemy w ciągu 24 godzin.</p>
               </div>
             )}
           </motion.div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Clock, Users, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Download, Clock, Users, ArrowRight, X, AlertCircle, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './Button';
 import { trackEvent, trackFacebookEvent } from './Analytics';
+import { submitLeadForm } from '../services/api';
 
 const LeadMagnet = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -10,6 +11,17 @@ const LeadMagnet = () => {
     hours: 14,
     minutes: 32
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    industry: '',
+    region: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -39,32 +51,53 @@ const LeadMagnet = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleGetSample = () => {
-    // Track analytics events
-    trackEvent('lead_magnet_click', 'Lead Generation', 'Free Sample Download', 1);
-    trackFacebookEvent('Lead', { content_name: 'Free Sample 100 Contacts' });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setError(null);
+  };
+
+  const handleOpenModal = () => {
+    trackEvent('lead_magnet_click', 'Lead Generation', 'Modal Opened', 1);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setError(null);
+    if (isSubmitted) {
+      setIsSubmitted(false);
+      setFormData({ name: '', email: '', company: '', industry: '', region: '' });
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     
-    const subject = "Darmowa próbka 100 kontaktów - SelectCentre";
-    const body = `
-Dzień dobry,
-
-Chciałbym otrzymać darmową próbkę 100 kontaktów.
-
-Moje dane:
-- Imię i nazwisko: 
-- Firma: 
-- Branża docelowa: 
-- Region: 
-- Dodatkowe kryteria: 
-
-Pozdrawiam
-    `;
+    if (!formData.name || !formData.email) {
+      setError('Proszę podać imię i email.');
+      return;
+    }
     
-    const mailtoLink = `mailto:kontakt@selectcentre.pl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.open(mailtoLink, '_blank');
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Track analytics events
+      trackEvent('lead_magnet_submit', 'Lead Generation', 'Free Sample Download', 1);
+      trackFacebookEvent('Lead', { content_name: 'Free Sample 100 Contacts' });
+      
+      await submitLeadForm(formData);
+      setIsSubmitted(true);
+    } catch (err) {
+      setError(err.message || 'Wystąpił błąd. Spróbuj ponownie.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
+    <>
     <section className="py-16 bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-48 -mt-48" />
@@ -127,7 +160,7 @@ Pozdrawiam
 
           {/* CTA Button */}
           <motion.button
-            onClick={handleGetSample}
+            onClick={handleOpenModal}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-yellow-400 text-navy px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-300 transition-colors shadow-2xl shadow-yellow-400/20 flex items-center justify-center gap-2 mx-auto"
@@ -156,6 +189,177 @@ Pozdrawiam
         </motion.div>
       </div>
     </section>
+
+    {/* Lead Form Modal */}
+    <AnimatePresence>
+      {isModalOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={handleCloseModal}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={handleCloseModal}
+              className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X size={20} className="text-gray-500" />
+            </button>
+
+            {!isSubmitted ? (
+              <>
+                <div className="text-center mb-6">
+                  <div className="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Download className="w-7 h-7 text-yellow-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-navy mb-2">Darmowa próbka 100 kontaktów</h3>
+                  <p className="text-gray-600 text-sm">Podaj dane, a my przygotujemy dla Ciebie spersonalizowaną próbkę.</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label htmlFor="lead-name" className="block text-sm font-medium text-gray-700 mb-1">
+                      Imię i nazwisko *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="lead-name"
+                      required
+                      minLength={2}
+                      maxLength={100}
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
+                      placeholder="Jan Kowalski"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="lead-email" className="block text-sm font-medium text-gray-700 mb-1">
+                      Email służbowy *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="lead-email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
+                      placeholder="jan@firma.pl"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="lead-company" className="block text-sm font-medium text-gray-700 mb-1">
+                      Firma
+                    </label>
+                    <input
+                      type="text"
+                      name="company"
+                      id="lead-company"
+                      maxLength={200}
+                      value={formData.company}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
+                      placeholder="Nazwa firmy"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label htmlFor="lead-industry" className="block text-sm font-medium text-gray-700 mb-1">
+                        Branża docelowa
+                      </label>
+                      <input
+                        type="text"
+                        name="industry"
+                        id="lead-industry"
+                        maxLength={200}
+                        value={formData.industry}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
+                        placeholder="np. IT, Finanse"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="lead-region" className="block text-sm font-medium text-gray-700 mb-1">
+                        Region
+                      </label>
+                      <input
+                        type="text"
+                        name="region"
+                        id="lead-region"
+                        maxLength={200}
+                        value={formData.region}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
+                        placeholder="np. Warszawa"
+                      />
+                    </div>
+                  </div>
+
+                  {error && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2 text-red-700">
+                      <AlertCircle size={16} />
+                      <span className="text-sm">{error}</span>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full bg-navy text-white py-4 rounded-xl font-semibold hover:bg-navy-light transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Wysyłanie...
+                      </>
+                    ) : (
+                      <>
+                        <Download size={18} />
+                        Otrzymaj darmową próbkę
+                      </>
+                    )}
+                  </button>
+
+                  <p className="text-xs text-gray-500 text-center">
+                    Twoje dane są bezpieczne. Nie wysyłamy spamu.
+                  </p>
+                </form>
+              </>
+            ) : (
+              <div className="text-center py-6">
+                <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-8 h-8 text-green-500" />
+                </div>
+                <h3 className="text-xl font-bold text-green-800 mb-2">Dziękujemy!</h3>
+                <p className="text-gray-600 mb-4">
+                  Twoja darmowa próbka zostanie wysłana na <strong>{formData.email}</strong> w ciągu 2 godzin.
+                </p>
+                <button
+                  onClick={handleCloseModal}
+                  className="text-navy font-medium hover:underline"
+                >
+                  Zamknij okno
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 };
 
