@@ -19,7 +19,7 @@ const Hero = () => {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 font-medium text-sm border border-green-200 animate-pulse">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              🔥 Ponad 500 firm zwiększyło sprzedaż z nami
+              🔥 Ponad 10 firm zwiększyło sprzedaż z nami
             </span>
           </motion.div>
           

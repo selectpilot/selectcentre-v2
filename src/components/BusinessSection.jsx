@@ -9,7 +9,7 @@ const BusinessSection = () => {
       title: 'Profesjonalne Call Center',
       description: 'Pełna obsługa telefoniczna Twoich klientów',
       features: ['Inbound/Outbound calls', 'Profesjonalni agenci', 'Obsługa 24/7', 'Wielojęzyczna obsługa'],
-      price: 'od 15 zł/godz agenta'
+      price: 'od 40 zł/godz agenta'
     },
     {
       icon: Database,

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const AboutSection = () => {
   const stats = [
-    { icon: Users, number: '500+', label: 'Obsłużonych firm' },
+    { icon: Users, number: '10+', label: 'Obsłużonych firm' },
     { icon: TrendingUp, number: '1M+', label: 'Połączeń telefonicznych' },
     { icon: Award, number: '+35%', label: 'Średnia poprawa konwersji' },
     { icon: Shield, number: '5 lat', label: 'Doświadczenia na rynku' }
