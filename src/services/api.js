@@ -39,8 +39,8 @@ export async function submitContactForm(data) {
 }
 
 /**
- * Submit lead/sample request
- * @param {Object} data - { name, email, company?, industry?, region? }
+ * Submit CallCenter audit request
+ * @param {Object} data - { name, email, company?, teamSize?, challenges? }
  */
 export async function submitLeadForm(data) {
   const response = await fetch(`${API_URL}/leads`, {

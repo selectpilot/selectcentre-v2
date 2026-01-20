@@ -1,29 +1,29 @@
 import React from 'react';
-import { Database, Mail, Brain, ArrowRight, Check } from 'lucide-react';
+import { Phone, Database, BarChart, ArrowRight, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const BusinessSection = () => {
   const services = [
     {
+      icon: Phone,
+      title: 'Profesjonalne Call Center',
+      description: 'Pełna obsługa telefoniczna Twoich klientów',
+      features: ['Inbound/Outbound calls', 'Profesjonalni agenci', 'Obsługa 24/7', 'Wielojęzyczna obsługa'],
+      price: 'od 15 zł/godz agenta'
+    },
+    {
       icon: Database,
-      title: 'Bazy danych B2B/B2C',
-      description: 'Precyzyjnie dobrane kontakty według Twoich kryteriów',
-      features: ['Segmentacja branżowa', 'Dane kontaktowe', 'Informacje firmowe', 'Aktualizacje na żywo'],
+      title: 'Bazy danych i leadgeneration',
+      description: 'Precyzyjnie dobrane kontakty dla Twoich kampanii',
+      features: ['Segmentacja branżowa', 'Dane kontaktowe B2B/B2C', 'Kwalifikacja leadów', 'Integracja CRM'],
       price: 'od 0,50 zł/rekord'
     },
     {
-      icon: Mail,
-      title: 'Kampanie e-mailingowe',
-      description: 'Kompleksowa obsługa kampanii marketingowych',
-      features: ['Projektowanie kampanii', 'Segmentacja odbiorców', 'A/B testing', 'Raportowanie ROI'],
-      price: 'od 500 zł/kampania'
-    },
-    {
-      icon: Brain,
-      title: 'Rozwiązania AI',
-      description: 'Zaawansowana analityka i personalizacja',
-      features: ['Predykcja zachowań', 'Automatyzacja procesów', 'Analiza sentymentu', 'Chatboty biznesowe'],
-      price: 'wycena indywidualna'
+      icon: BarChart,
+      title: 'Analityka i optymalizacja',
+      description: 'Monitorowanie i poprawa wyników call center',
+      features: ['Monitoring rozmów', 'Raporty konwersji', 'A/B testing skryptów', 'Szkolenia agentów'],
+      price: 'od 800 zł/miesiąc'
     }
   ];
 
@@ -39,11 +39,11 @@ const BusinessSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl lg:text-4xl font-bold text-navy mb-6">
-            Rozwiązania dla Biznesu
+            Usługi Call Center
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Pomożemy Ci dotrzeć do właściwych klientów z właściwym przekazem we właściwym czasie. 
-            Sprawdź jak nasze dane mogą zwiększyć Twoje wyniki sprzedażowe.
+            Kompleksowa obsługa sprzedaży telefonicznej - od pozyskania leadów, przez profesjonalne rozmowy, 
+            aż po analizę wyników. Zwiększ swoją sprzedaż o 35% średnio.
           </p>
         </motion.div>
 
@@ -94,16 +94,16 @@ const BusinessSection = () => {
             Gotowy na zwiększenie sprzedaży?
           </h3>
           <p className="text-navy-light mb-8 max-w-2xl mx-auto">
-            Otrzymaj bezpłatną próbkę 100 kontaktów dopasowanych do Twojego biznesu. 
-            Bez zobowiązań, bez ukrytych kosztów.
+            Otrzymaj bezpłatny audyt swojego call center (wartość 500 zł). 
+            Pokażemy jak zwiększyć konwersję o minimum 25%.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('lead-magnet')?.scrollIntoView({ behavior: 'smooth' })}
               className="px-8 py-4 bg-white text-navy rounded-xl font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
             >
-              Pobierz darmową próbkę
+              Darmowy audyt call center
               <ArrowRight size={18} />
             </button>
             <button 
@@ -124,20 +124,20 @@ const BusinessSection = () => {
           className="mt-16 grid md:grid-cols-4 gap-8 text-center"
         >
           <div>
-            <div className="text-2xl font-bold text-navy mb-1">24h</div>
-            <div className="text-sm text-gray-600">Czas realizacji</div>
+            <div className="text-2xl font-bold text-navy mb-1">+35%</div>
+            <div className="text-sm text-gray-600">Średnia poprawa konwersji</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-navy mb-1">99%</div>
-            <div className="text-sm text-gray-600">Jakość danych</div>
+            <div className="text-2xl font-bold text-navy mb-1">1M+</div>
+            <div className="text-sm text-gray-600">Obsłużonych połączeń</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-navy mb-1">500+</div>
-            <div className="text-sm text-gray-600">Zadowolonych firm</div>
+            <div className="text-2xl font-bold text-navy mb-1">150+</div>
+            <div className="text-sm text-gray-600">Aktywnych kampanii</div>
           </div>
           <div>
             <div className="text-2xl font-bold text-navy mb-1">24/7</div>
-            <div className="text-sm text-gray-600">Wsparcie techniczne</div>
+            <div className="text-sm text-gray-600">Obsługa call center</div>
           </div>
         </motion.div>
       </div>

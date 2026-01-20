@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 
 const AboutSection = () => {
   const stats = [
-    { icon: Users, number: '500+', label: 'Zadowolonych klientów' },
-    { icon: TrendingUp, number: '2M+', label: 'Zweryfikowanych kontaktów' },
-    { icon: Award, number: '99%', label: 'Jakość danych' },
+    { icon: Users, number: '500+', label: 'Obsłużonych firm' },
+    { icon: TrendingUp, number: '1M+', label: 'Połączeń telefonicznych' },
+    { icon: Award, number: '+35%', label: 'Średnia poprawa konwersji' },
     { icon: Shield, number: '5 lat', label: 'Doświadczenia na rynku' }
   ];
 
@@ -26,17 +26,17 @@ const AboutSection = () => {
             </h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                <strong className="text-navy">SelectCentre</strong> to polska firma specjalizująca się w zarządzaniu danymi biznesowymi 
-                i analityce. Od 2019 roku pomagamy firmom w budowaniu skutecznych strategii marketingowych 
-                opartych na wysokiej jakości danych.
+                <strong className="text-navy">SelectCentre</strong> to polska firma specjalizująca się w profesjonalnej obsłudze 
+                call center i telefonicznej sprzedaży. Od 2019 roku zwiększamy efektywność sprzedaży naszych 
+                klientów średnio o 35% dzięki sprawdzonym procesom i własnej bazie leadów.
               </p>
               <p>
-                Nasza misja to <strong className="text-navy">demokratyzacja dostępu do danych biznesowych</strong> przy 
-                jednoczesnym zachowaniu najwyższych standardów prywatności i zgodności z RODO.
+                Nasza misja to <strong className="text-navy">maksymalizacja wyników sprzedażowych</strong> poprzez 
+                profesjonalną obsługę telefoniczną połączoną z wysokiej jakości danymi kontaktowymi.
               </p>
               <p>
-                Współpracujemy z setkami firm - od startupów po korporacje, dostarczając im narzędzia 
-                do skutecznego dotarcia do klientów B2B i B2C.
+                Oferujemy kompleksową obsługę - od call center, przez bazy danych, po analizę wyników. 
+                Współpracujemy z setkami firm zapewniając im stały wzrost konwersji.
               </p>
             </div>
             

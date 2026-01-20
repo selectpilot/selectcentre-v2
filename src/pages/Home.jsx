@@ -5,6 +5,7 @@ import TrustSection from '../components/TrustSection';
 import AboutSection from '../components/AboutSection';
 import SocialProof from '../components/SocialProof';
 import BusinessSection from '../components/BusinessSection';
+import TechnologySection from '../components/TechnologySection';
 import LeadMagnet from '../components/LeadMagnet';
 import FAQ from '../components/FAQ';
 import ContactSection from '../components/ContactSection';
@@ -31,6 +32,7 @@ const Home = () => {
       <AboutSection />
       <SocialProof />
       <BusinessSection />
+      <TechnologySection />
       <LeadMagnet />
       <FAQ />
       <ContactSection />

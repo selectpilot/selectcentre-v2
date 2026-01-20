@@ -181,7 +181,7 @@ app.post('/api/contact',
   }
 );
 
-// Lead magnet / free sample request
+// CallCenter audit request
 app.post('/api/leads',
   formLimiter,
   sanitizeBody,
@@ -189,20 +189,20 @@ app.post('/api/leads',
     body('name').trim().isLength({ min: 2, max: 100 }).withMessage('Imię i nazwisko musi mieć 2-100 znaków'),
     body('email').trim().isEmail().normalizeEmail().withMessage('Podaj prawidłowy adres email'),
     body('company').optional().trim().isLength({ max: 200 }).withMessage('Nazwa firmy może mieć maksymalnie 200 znaków'),
-    body('industry').optional().trim().isLength({ max: 200 }).withMessage('Branża może mieć maksymalnie 200 znaków'),
-    body('region').optional().trim().isLength({ max: 200 }).withMessage('Region może mieć maksymalnie 200 znaków')
+    body('teamSize').optional().trim().isLength({ max: 50 }).withMessage('Rozmiar zespołu może mieć maksymalnie 50 znaków'),
+    body('challenges').optional().trim().isLength({ max: 200 }).withMessage('Wyzwania mogą mieć maksymalnie 200 znaków')
   ],
   handleValidationErrors,
   async (req, res) => {
     try {
-      const { name, email, company, industry, region } = req.body;
+      const { name, email, company, teamSize, challenges } = req.body;
       
-      // Check if email already requested a sample
+      // Check if email already requested audit
       const existingQuery = await queryDocuments('leads', 'email', email);
       
       if (!existingQuery.empty) {
         return res.status(400).json({ 
-          error: 'Ten adres email już otrzymał darmową próbkę. Skontaktuj się z nami bezpośrednio.'
+          error: 'Ten adres email już otrzymał audyt call center. Skontaktuj się z nami bezpośrednio.'
         });
       }
       
@@ -210,19 +210,19 @@ app.post('/api/leads',
         name,
         email,
         company: company || null,
-        industry: industry || null,
-        region: region || null,
+        teamSize: teamSize || null,
+        challenges: challenges || null,
         ipAddress: req.ip,
         userAgent: req.get('User-Agent'),
-        status: 'pending',
-        sampleSent: false
+        status: 'audit-requested',
+        auditScheduled: false
       });
 
-      console.log(`[LEAD] New lead: ${docRef.id} from ${email}`);
+      console.log(`[LEAD] New audit request: ${docRef.id} from ${email}`);
       
       res.status(201).json({ 
         success: true,
-        message: 'Dziękujemy! Darmowa próbka zostanie wysłana w ciągu 2 godzin.',
+        message: 'Dziękujemy! Nasz ekspert skontaktuje się z Tobą w ciągu 2 godzin.',
         id: docRef.id
       });
     } catch (error) {

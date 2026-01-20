@@ -4,36 +4,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const faqs = [
   {
-    question: "Skąd macie mój numer?",
-    answer: "Agregujemy dane z publicznych rejestrów CEIDG/GUS (dla firm) lub od partnerów marketingowych, którym udzieliłeś zgody (dla osób prywatnych)."
+    question: "Jak działa call center SelectCentre?",
+    answer: "Nasze call center oferuje pełną obsługę - inbound/outbound calls, profesjonalnych agentów, wsparcie 24/7. Używamy sprawdzonych skryptów i monitoring w czasie rzeczywistym."
   },
   {
-    question: "Czy to legalne?",
-    answer: "Tak. Przetwarzamy dane publiczne na podstawie prawnie uzasadnionego interesu lub na podstawie zgody, którą w każdej chwili możesz wycofać."
+    question: "O ile zwiększycie naszą konwersję?",
+    answer: "Średnia poprawa konwersji naszych klientów wynosi 35%. Zależy to od branży, produktu i obecnych wyników. Oferujemy bezpłatny audyt do oceny potencjału."
   },
   {
-    question: "Jak zablokować telefony?",
-    answer: "Skorzystaj z formularza w Strefie Konsumenta. Twój numer zostanie trwale zablokowany w naszej bazie."
+    question: "Ile kosztuje obsługa call center?",
+    answer: "Ceny zaczynają się od 15 zł/godzina agenta. Końcowa cena zależy od typu kampanii, ilości godzin i dodatkowych usług. Oferujemy elastyczne pakiety."
   },
   {
-    question: "Ile kosztują bazy danych?",
-    answer: "Ceny zaczynają się od 0,50 zł za rekord. Końcowa cena zależy od ilości danych, segmentacji i aktualności. Skontaktuj się z nami po bezpłatną wycenę."
+    question: "Skąd bierzecie kontakty do dzwonienia?",
+    answer: "Wykorzystujemy własne bazy danych budowane od 2019 roku oraz publiczne rejestry CEIDG/GUS. Wszystkie dane są zgodne z RODO i aktualizowane na bieżąco."
   },
   {
-    question: "Jak szybko otrzymam dane?",
-    answer: "Standardowy czas realizacji to 24 godziny robocze. W przypadku pilnych zleceń możemy przyspieszyć realizację do kilku godzin."
+    question: "Jak szybko można uruchomić kampanię?",
+    answer: "Standardowe wdrożenie trwa 3-5 dni roboczych. Obejmuje to analizę potrzeb, przygotowanie skryptów, szkolenie agentów i testy. W pilnych przypadkach możemy przyspieszyć proces."
   },
   {
-    question: "Czy dane są aktualne?",
-    answer: "Tak, nasze bazy są aktualizowane na bieżąco na podstawie rejestrów CEIDG, GUS i innych źródeł. Gwarantujemy 99% jakość danych."
+    question: "Czy oferujecie monitoring jakości?",
+    answer: "Tak! Wszystkie rozmowy są nagrywane i analizowane. Dostarczamy szczegółowe raporty konwersji, statystyki agentów i rekomendacje optymalizacji w czasie rzeczywistym."
   },
   {
-    question: "Czy oferujecie próbki danych?",
-    answer: "Tak! Możesz otrzymać bezpłatną próbkę 100 kontaktów dopasowanych do Twoich kryteriów. To pozwoli Ci ocenić jakość przed zakupem."
+    question: "Czy mają Państwo doświadczenie w mojej branży?",
+    answer: "Obsługiwaliśmy już kampanie w większości branż - od IT, przez finanse, po e-commerce. Każda kampania jest dostosowana do specyfiki branży i grupy docelowej."
   },
   {
-    question: "W jakich formatach otrzymam dane?",
-    answer: "Dostarczamy dane w popularnych formatach: Excel (.xlsx), CSV, JSON. Możemy również przygotować dane w dedykowanym formacie według Twoich wymagań."
+    question: "Jak mogę zablokować telefony od call center?",
+    answer: "Skorzystaj z formularza w Strefie Konsumenta. Twój numer zostanie trwale zablokowany w naszej bazie i nie otrzymasz więcej połączeń marketingowych."
   }
 ];
 
@@ -45,7 +45,7 @@ const FAQ = () => {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-navy mb-4">Najczęściej zadawane pytania</h2>
-          <p className="text-gray-600">Rozwiewamy wszelkie wątpliwości dotyczące przetwarzania danych.</p>
+          <p className="text-gray-600">Rozwiewamy wszelkie wątpliwości dotyczące usług call center i telefonicznej sprzedaży.</p>
         </div>
         
         <div className="space-y-4">

@@ -19,7 +19,7 @@ const Hero = () => {
           >
             <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 text-green-700 font-medium text-sm border border-green-200 animate-pulse">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              🔥 Ponad 500 firm już nam zaufało
+              🔥 Ponad 500 firm zwiększyło sprzedaż z nami
             </span>
           </motion.div>
           
@@ -29,8 +29,8 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-6xl font-bold text-navy tracking-tight mb-8 leading-tight"
           >
-            Profesjonalne zarządzanie danymi <br className="hidden sm:block" />
-            <span className="text-navy-light">w zgodzie z prawem.</span>
+            Profesjonalne call center, <br className="hidden sm:block" />
+            <span className="text-navy-light">które zwiększa Twoją sprzedaż.</span>
           </motion.h1>
 
           <motion.p 
@@ -39,7 +39,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed"
           >
-            Jesteśmy polskim dostawcą informacji gospodarczej. Działamy w oparciu o RODO i najwyższe standardy etyczne.
+            Kompleksowa obsługa telefoniczna z własną bazą leadów. Zwiększamy konwersję o 35% dzięki profesjonalnym agentom i sprawdzonym skryptom.
           </motion.p>
 
           <motion.div 
@@ -50,13 +50,13 @@ const Hero = () => {
           >
             <ButtonGroup className="justify-center">
               <Button 
-                onClick={() => navigate('/strefa-konsumenta')}
+                onClick={() => document.getElementById('lead-magnet')?.scrollIntoView({ behavior: 'smooth' })}
                 variant="primary"
                 size="lg"
                 icon={ArrowRight}
                 iconPosition="right"
               >
-                Sprawdź swoje dane / Wypisz się
+                Bezpłatny audyt call center
               </Button>
               <Button 
                 onClick={() => document.getElementById('business')?.scrollIntoView({ behavior: 'smooth' })}

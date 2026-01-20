@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Clock, Users, ArrowRight, X, AlertCircle, CheckCircle } from 'lucide-react';
+import { Phone, Clock, TrendingUp, ArrowRight, X, AlertCircle, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './Button';
 import { trackEvent, trackFacebookEvent } from './Analytics';
@@ -16,8 +16,8 @@ const LeadMagnet = () => {
     name: '',
     email: '',
     company: '',
-    industry: '',
-    region: ''
+    teamSize: '',
+    challenges: ''
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -67,7 +67,7 @@ const LeadMagnet = () => {
     setError(null);
     if (isSubmitted) {
       setIsSubmitted(false);
-      setFormData({ name: '', email: '', company: '', industry: '', region: '' });
+      setFormData({ name: '', email: '', company: '', teamSize: '', challenges: '' });
     }
   };
 
@@ -98,7 +98,7 @@ const LeadMagnet = () => {
 
   return (
     <>
-    <section className="py-16 bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
+    <section id="lead-magnet" className="py-16 bg-gradient-to-br from-navy to-navy-light relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-48 -mt-48" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full -ml-48 -mb-48" />
@@ -118,12 +118,12 @@ const LeadMagnet = () => {
           </div>
 
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Otrzymaj <span className="text-yellow-400">100 kontaktów za darmo</span>
+            Otrzymaj <span className="text-yellow-400">darmowy audyt call center</span>
           </h2>
           
           <p className="text-xl text-navy-light mb-8 max-w-2xl mx-auto">
-            Przetestuj jakość naszych danych bez żadnych zobowiązań. 
-            Wybierz branżę i region - my dostarczymy najlepsze kontakty.
+            Bezpłatna analiza Twojego call center (wartość 500 zł). 
+            Pokażemy jak zwiększyć konwersję o minimum 25% w 30 dni.
           </p>
 
           {/* Timer */}
@@ -145,12 +145,12 @@ const LeadMagnet = () => {
           {/* Features */}
           <div className="grid md:grid-cols-3 gap-6 mb-8 text-sm">
             <div className="flex items-center justify-center gap-2">
-              <Download className="w-5 h-5 text-yellow-400" />
-              <span>Natychmiastowy dostęp</span>
+              <Phone className="w-5 h-5 text-yellow-400" />
+              <span>Analiza obecnych procesów</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <Users className="w-5 h-5 text-yellow-400" />
-              <span>100% zweryfikowane dane</span>
+              <TrendingUp className="w-5 h-5 text-yellow-400" />
+              <span>Plan zwiększenia konwersji</span>
             </div>
             <div className="flex items-center justify-center gap-2">
               <Clock className="w-5 h-5 text-yellow-400" />
@@ -165,25 +165,25 @@ const LeadMagnet = () => {
             whileTap={{ scale: 0.95 }}
             className="bg-yellow-400 text-navy px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-300 transition-colors shadow-2xl shadow-yellow-400/20 flex items-center justify-center gap-2 mx-auto"
           >
-            <Download size={20} />
-            Pobierz darmową próbkę
+            <Phone size={20} />
+            Umów darmowy audyt
             <ArrowRight size={20} />
           </motion.button>
           
           <p className="text-xs text-navy-light mt-4">
-            ⚡ Średni czas odpowiedzi: 2 godziny • 🔒 Bez spamu • ✅ Bezpłatne
+            ⚡ Średni czas odpowiedzi: 2 godziny • 🔒 Bez zobowiązań • ✅ Bezpłatne
           </p>
           
           {/* Social proof */}
           <div className="mt-8 flex items-center justify-center gap-6 text-sm text-navy-light">
             <div className="flex items-center gap-1">
-              <span className="text-yellow-400 font-semibold">347+</span>
-              <span>firm już pobrało</span>
+              <span className="text-yellow-400 font-semibold">127+</span>
+              <span>audytów przeprowadzono</span>
             </div>
             <div className="w-1 h-1 bg-navy-light rounded-full"></div>
             <div className="flex items-center gap-1">
-              <span className="text-yellow-400 font-semibold">4.9/5</span>
-              <span>średnia ocena</span>
+              <span className="text-yellow-400 font-semibold">+35%</span>
+              <span>średnia poprawa</span>
             </div>
           </div>
         </motion.div>
@@ -218,10 +218,10 @@ const LeadMagnet = () => {
               <>
                 <div className="text-center mb-6">
                   <div className="w-14 h-14 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Download className="w-7 h-7 text-yellow-600" />
+                    <Phone className="w-7 h-7 text-yellow-600" />
                   </div>
-                  <h3 className="text-2xl font-bold text-navy mb-2">Darmowa próbka 100 kontaktów</h3>
-                  <p className="text-gray-600 text-sm">Podaj dane, a my przygotujemy dla Ciebie spersonalizowaną próbkę.</p>
+                  <h3 className="text-2xl font-bold text-navy mb-2">Darmowy audyt call center</h3>
+                  <p className="text-gray-600 text-sm">Podaj dane, a my przygotujemy dla Ciebie spersonalizowaną analizę i rekomendacje.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -277,33 +277,33 @@ const LeadMagnet = () => {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label htmlFor="lead-industry" className="block text-sm font-medium text-gray-700 mb-1">
-                        Branża docelowa
+                      <label htmlFor="lead-team-size" className="block text-sm font-medium text-gray-700 mb-1">
+                        Rozmiar zespołu
                       </label>
                       <input
                         type="text"
-                        name="industry"
-                        id="lead-industry"
-                        maxLength={200}
-                        value={formData.industry}
+                        name="teamSize"
+                        id="lead-team-size"
+                        maxLength={50}
+                        value={formData.teamSize}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
-                        placeholder="np. IT, Finanse"
+                        placeholder="np. 5-10 agentów"
                       />
                     </div>
                     <div>
-                      <label htmlFor="lead-region" className="block text-sm font-medium text-gray-700 mb-1">
-                        Region
+                      <label htmlFor="lead-challenges" className="block text-sm font-medium text-gray-700 mb-1">
+                        Główne wyzwania
                       </label>
                       <input
                         type="text"
-                        name="region"
-                        id="lead-region"
+                        name="challenges"
+                        id="lead-challenges"
                         maxLength={200}
-                        value={formData.region}
+                        value={formData.challenges}
                         onChange={handleChange}
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/20 outline-none transition-all"
-                        placeholder="np. Warszawa"
+                        placeholder="np. niska konwersja"
                       />
                     </div>
                   </div>
@@ -327,8 +327,8 @@ const LeadMagnet = () => {
                       </>
                     ) : (
                       <>
-                        <Download size={18} />
-                        Otrzymaj darmową próbkę
+                        <Phone size={18} />
+                        Umów darmowy audyt
                       </>
                     )}
                   </button>
@@ -345,7 +345,7 @@ const LeadMagnet = () => {
                 </div>
                 <h3 className="text-xl font-bold text-green-800 mb-2">Dziękujemy!</h3>
                 <p className="text-gray-600 mb-4">
-                  Twoja darmowa próbka zostanie wysłana na <strong>{formData.email}</strong> w ciągu 2 godzin.
+                  Nasz ekspert call center skontaktuje się z Tobą na <strong>{formData.email}</strong> w ciągu 2 godzin w celu umówienia audytu.
                 </p>
                 <button
                   onClick={handleCloseModal}
