@@ -121,7 +121,7 @@ const LeadMagnet = () => {
             Otrzymaj <span className="text-yellow-400">darmowy audyt call center</span>
           </h2>
           
-          <p className="text-xl text-navy-light mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Bezpłatna analiza Twojego call center (wartość 500 zł). 
             Pokażemy jak zwiększyć konwersję o minimum 25% w 30 dni.
           </p>
@@ -170,17 +170,17 @@ const LeadMagnet = () => {
             <ArrowRight size={20} />
           </motion.button>
           
-          <p className="text-xs text-navy-light mt-4">
+          <p className="text-xs text-white/80 mt-4">
             ⚡ Średni czas odpowiedzi: 2 godziny • 🔒 Bez zobowiązań • ✅ Bezpłatne
           </p>
           
           {/* Social proof */}
-          <div className="mt-8 flex items-center justify-center gap-6 text-sm text-navy-light">
+          <div className="mt-8 flex items-center justify-center gap-6 text-sm text-white/80">
             <div className="flex items-center gap-1">
               <span className="text-yellow-400 font-semibold">127+</span>
               <span>audytów przeprowadzono</span>
             </div>
-            <div className="w-1 h-1 bg-navy-light rounded-full"></div>
+            <div className="w-1 h-1 bg-white/60 rounded-full"></div>
             <div className="flex items-center gap-1">
               <span className="text-yellow-400 font-semibold">+35%</span>
               <span>średnia poprawa</span>

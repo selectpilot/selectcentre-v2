@@ -114,7 +114,7 @@ const TechnologySection = () => {
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
               Wydajność i niezawodność
             </h3>
-            <p className="text-navy-light max-w-2xl mx-auto">
+            <p className="text-white/90 max-w-2xl mx-auto">
               Nasza infrastruktura technologiczna zapewnia najwyższą jakość obsługi 
               i maksymalną efektywność operacyjną.
             </p>
@@ -134,8 +134,8 @@ const TechnologySection = () => {
                   <capability.icon className="w-8 h-8 text-yellow-400" />
                 </div>
                 <div className="text-3xl font-bold text-yellow-400 mb-2">{capability.metric}</div>
-                <div className="text-lg font-semibold mb-2">{capability.label}</div>
-                <div className="text-sm text-navy-light">{capability.description}</div>
+                <div className="text-lg font-semibold mb-2 text-white">{capability.label}</div>
+                <div className="text-sm text-white/80">{capability.description}</div>
               </motion.div>
             ))}
           </div>
