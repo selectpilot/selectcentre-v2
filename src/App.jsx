@@ -10,6 +10,8 @@ import Home from './pages/Home';
 import ConsumerZone from './pages/ConsumerZone';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import Partnerzy from './pages/Partnerzy';
+import KlauzulaInformacyjna from './pages/KlauzulaInformacyjna';
 
 function App() {
   return (
@@ -24,8 +26,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/strefa-konsumenta" element={<ConsumerZone />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/klauzula-informacyjna" element={<PrivacyPolicy />} />
+              <Route path="/klauzula-informacyjna" element={<KlauzulaInformacyjna />} />
               <Route path="/regulamin" element={<TermsOfService />} />
+              <Route path="/partnerzy" element={<Partnerzy />} />
             </Routes>
           </main>
           <Footer />
