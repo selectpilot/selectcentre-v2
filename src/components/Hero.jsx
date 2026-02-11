@@ -37,9 +37,18 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-xl text-gray-600 mb-4 max-w-2xl mx-auto leading-relaxed"
           >
             Kompleksowa obsługa telefoniczna z własną bazą leadów. Zwiększamy konwersję o 35% dzięki profesjonalnym agentom i sprawdzonym skryptom.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="text-base text-gray-500 mb-8 max-w-2xl mx-auto leading-relaxed"
+          >
+            Działamy zgodnie z prawem i dbamy o bezpieczeństwo Twoich danych.{' '}
+            <a href="/klauzula-informacyjna" className="text-navy underline hover:text-navy-light transition-colors">Dowiedz się więcej</a>
           </motion.p>
 
           <motion.div 
