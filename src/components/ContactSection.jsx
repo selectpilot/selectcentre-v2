@@ -89,16 +89,6 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-navy/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-6 h-6 text-navy" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Telefon</h4>
-                  <p className="text-gray-600">+48 22 123 45 67</p>
-                  <p className="text-sm text-gray-500">Pon-Pt 9:00-17:00</p>
-                </div>
-              </div>
 
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-navy/10 rounded-xl flex items-center justify-center flex-shrink-0">
