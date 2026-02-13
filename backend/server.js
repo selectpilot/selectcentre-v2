@@ -1,4 +1,14 @@
 const express = require('express');
+const nodemailer = require('nodemailer');
+// Konfiguracja transportu SMTP dla Gmail (Google Workspace)
+const mailTransport = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER, // np. kontakt@selectcentre.pl
+    pass: process.env.GMAIL_PASS  // hasło aplikacji Gmail (App Password)
+  }
+});
+
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -167,8 +177,23 @@ app.post('/api/contact',
         status: 'new'
       });
 
+      // Wysyłka maila do właściciela skrzynki
+      const mailOptions = {
+        from: `SelectCentre <${process.env.GMAIL_USER}>`,
+        to: process.env.GMAIL_USER,
+        subject: 'Nowa wiadomość z formularza kontaktowego SelectCentre',
+        text: `Imię i nazwisko: ${name}\nEmail: ${email}\nFirma: ${company || '-'}\nWiadomość: ${message}`,
+        html: `<b>Imię i nazwisko:</b> ${name}<br/><b>Email:</b> ${email}<br/><b>Firma:</b> ${company || '-'}<br/><b>Wiadomość:</b><br/>${message.replace(/\n/g, '<br/>')}`
+      };
+
+      try {
+        await mailTransport.sendMail(mailOptions);
+        console.log(`[MAIL] Wysłano powiadomienie do ${process.env.GMAIL_USER}`);
+      } catch (mailErr) {
+        console.error('[MAIL] Błąd wysyłki maila:', mailErr);
+      }
+
       console.log(`[CONTACT] New submission: ${docRef.id} from ${email}`);
-      
       res.status(201).json({ 
         success: true,
         message: 'Wiadomość została wysłana. Odpowiemy w ciągu 24 godzin.',
