@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 // Konfiguracja transportu SMTP dla Gmail (Google Workspace)
@@ -83,9 +84,14 @@ app.use(helmet());
 app.use(hpp());
 
 // CORS configuration
+
 const allowedOrigins = process.env.FRONTEND_URL 
   ? [process.env.FRONTEND_URL, process.env.FRONTEND_URL.replace('https://', 'https://www.')]
-  : ['http://localhost:5173', 'http://localhost:3000'];
+  : [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'http://192.168.90.216:5173'
+    ];
 
 app.use(cors({
   origin: allowedOrigins,
